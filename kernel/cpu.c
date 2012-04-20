@@ -314,6 +314,7 @@ static int __cpuinit _cpu_up(unsigned int cpu, int tasks_frozen)
 
 	cpu_hotplug_begin();
 
+<<<<<<< HEAD
 	idle = idle_thread_get(cpu);
 	if (IS_ERR(idle)) {
 		ret = PTR_ERR(idle);
@@ -321,6 +322,9 @@ static int __cpuinit _cpu_up(unsigned int cpu, int tasks_frozen)
 	}
 
 	ret = smpboot_create_threads(cpu);
+=======
+	ret = smpboot_prepare(cpu);
+>>>>>>> 2d4ab94... smp: Add generic smpboot facility
 	if (ret)
 		goto out;
 
