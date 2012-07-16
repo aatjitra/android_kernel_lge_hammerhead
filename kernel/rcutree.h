@@ -465,3 +465,4 @@ static void zero_cpu_stall_ticks(struct rcu_data *rdp);
 static void increment_cpu_stall_ticks(void);
 
 #endif /* #ifndef RCU_TREE_NONCORE */
+
