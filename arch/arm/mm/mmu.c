@@ -1497,12 +1497,19 @@ static void __init map_lowmem(void)
 		vm->addr = (void *)(vaddr & PAGE_MASK);
 		vm->size = PAGE_ALIGN(length + (vaddr & ~PAGE_MASK));
 		vm->phys_addr = __pfn_to_phys(pfn);
+<<<<<<< HEAD
 		vm->flags = VM_LOWMEM | VM_ARM_STATIC_MAPPING;
 		vm->flags |= VM_ARM_MTYPE(type);
 		vm->caller = map_lowmem;
 		vm_area_add_early(vm);
 		mark_vmalloc_reserved_area(vm->addr, vm->size);
 		vm++;
+=======
+		vm->flags = VM_IOREMAP | VM_ARM_STATIC_MAPPING;
+		vm->flags |= VM_ARM_MTYPE(type);
+		vm->caller = map_lowmem;
+		vm_area_add_early(vm++);
+>>>>>>> 53d0556... msm: Allow lowmem to be non contiguous and mixed.
 	}
 }
 
