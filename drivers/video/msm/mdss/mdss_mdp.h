@@ -406,12 +406,6 @@ struct mdss_overlay_private {
 	struct work_struct retire_work;
 	int retire_cnt;
 
-	bool handoff;
-	u32 splash_mem_addr;
-	u32 splash_mem_size;
-	u32 sd_enabled;
-};
-
 #define is_vig_pipe(_pipe_id_) ((_pipe_id_) <= MDSS_MDP_SSPP_VIG2)
 static inline void mdss_mdp_ctl_write(struct mdss_mdp_ctl *ctl,
 				      u32 reg, u32 val)

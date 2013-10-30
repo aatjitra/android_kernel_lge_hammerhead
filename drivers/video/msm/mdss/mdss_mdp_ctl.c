@@ -23,17 +23,8 @@
 
 /* truncate at 1k */
 #define MDSS_MDP_BUS_FACTOR_SHIFT 10
-
-
-/*
- * 2x factor on AB because bus driver will divide by 2
- * due to 2x ports to BIMC
- */
-#define MDSS_MDP_BUS_FUDGE_FACTOR_AB(val) ((val) << 1)
-
-/* 1.5 factor to account for DDR inefficiency */
-#define MDSS_MDP_BUS_FUDGE_FACTOR_IB(val) mult_frac((val), 3, 2)
-
+/* 1.5 bus fudge factor */
+#define MDSS_MDP_BUS_FUDGE_FACTOR_AB(val) mult_frac(val, 5, 4)
 #define MDSS_MDP_BUS_FLOOR_BW (1600000000ULL)
 
 /* 1.25 clock fudge factor */
@@ -307,8 +298,11 @@ static void mdss_mdp_perf_calc_mixer(struct mdss_mdp_mixer *mixer,
 		if (mdss_mdp_perf_calc_pipe(pipe, &tmp))
 			continue;
 
+<<<<<<< HEAD
 		smp_bytes += mdss_mdp_smp_get_size(pipe);
 
+=======
+>>>>>>> c634b9f... msm: mdss: refactor performance calculations
 		ab_total += tmp.ab_quota >> MDSS_MDP_BUS_FACTOR_SHIFT;
 		ib_quota[i] = tmp.ib_quota >> MDSS_MDP_BUS_FACTOR_SHIFT;
 		v_region[2*i] = pipe->dst.y;
@@ -348,11 +342,36 @@ static void mdss_mdp_perf_calc_mixer(struct mdss_mdp_mixer *mixer,
 		ib_max = max(ib_max, ib_max_region);
 	}
 
+<<<<<<< HEAD
+=======
+	/*
+	 * bw due to the smp concurrent fetching. Since this is the
+	 * time that all pipes fetching lines, scaling is not a factor.
+	 */
+	for (i = 0; i < MDSS_MDP_MAX_STAGE; i++) {
+		u32 src_h, dst_h;
+		u32 ib_smp = 0;
+		if (!ib_quota[i])
+			continue;
+		pipe = mixer->stage_pipe[i];
+		src_h = pipe->src.h >> pipe->vert_deci;
+		dst_h = pipe->dst.h;
+		ib_smp = (src_h && src_h > dst_h) ?
+			mult_frac(ib_quota[i], dst_h, src_h) : ib_quota[i];
+		ib_max_smp += ib_smp;
+		pr_debug("src_h=%d dst_h=%d ib_q=%d ib_s=%d ib_max_smp=%d\n",
+			src_h, dst_h, ib_quota[i], ib_smp, ib_max_smp);
+	}
+	pr_debug("ib_max_region=%d ib_max_smp=%d\n", ib_max, ib_max_smp);
+	ib_max = max(ib_max, ib_max_smp);
+
+>>>>>>> c634b9f... msm: mdss: refactor performance calculations
 	perf->ab_quota += ab_total << MDSS_MDP_BUS_FACTOR_SHIFT;
 	perf->ib_quota += ib_max << MDSS_MDP_BUS_FACTOR_SHIFT;
 	if (max_clk_rate > perf->mdp_clk_rate)
 		perf->mdp_clk_rate = max_clk_rate;
 
+<<<<<<< HEAD
 	if (pinfo) {
 		int vbp;
 
@@ -374,6 +393,10 @@ static void mdss_mdp_perf_calc_mixer(struct mdss_mdp_mixer *mixer,
 	pr_debug("final mixer=%d clk_rate=%u bus ab=%llu ib=%llu smp=%llu\n",
 			mixer->num, perf->mdp_clk_rate,
 			perf->ab_quota, perf->ib_quota, smp_bw);
+=======
+	pr_debug("final mixer=%d clk_rate=%u bus ab=%llu ib=%llu\n", mixer->num,
+		 perf->mdp_clk_rate, perf->ab_quota, perf->ib_quota);
+>>>>>>> c634b9f... msm: mdss: refactor performance calculations
 }
 
 static void mdss_mdp_perf_calc_ctl(struct mdss_mdp_ctl *ctl,
@@ -1197,6 +1220,7 @@ int mdss_mdp_ctl_start(struct mdss_mdp_ctl *ctl, bool handoff)
 
 	mutex_lock(&ctl->lock);
 
+<<<<<<< HEAD
 	/*
 	 * keep power_on false during handoff to avoid unexpected
 	 * operations to overlay.
@@ -1204,6 +1228,9 @@ int mdss_mdp_ctl_start(struct mdss_mdp_ctl *ctl, bool handoff)
 	if (!handoff)
 		ctl->power_on = true;
 
+=======
+	ctl->power_on = true;
+>>>>>>> c634b9f... msm: mdss: refactor performance calculations
 	memset(&ctl->cur_perf, 0, sizeof(ctl->cur_perf));
 
 	mdss_mdp_clk_ctrl(MDP_BLOCK_POWER_ON, false);
