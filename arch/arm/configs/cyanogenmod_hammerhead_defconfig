@@ -723,8 +723,11 @@ CONFIG_CPU_FREQ_MSM=y
 # At least one emulation must be selected
 #
 CONFIG_VFP=y
-CONFIG_VFPv3=y
+# CONFIG_VFPv3 is not set
+CONFIG_VFPv4=y
 CONFIG_NEON=y
+CONFIG_KERNEL_MODE_NEON=y
+
 
 #
 # Userspace binary formats
@@ -2679,6 +2682,7 @@ CONFIG_USB_ACM=y
 CONFIG_USB_PRINTER=y
 CONFIG_USB_WDM=y
 # CONFIG_USB_TMC is not set
+# CONFIG_USB_CCID_BRIDGE is not set
 
 #
 # NOTE: USB_STORAGE depends on SCSI but BLK_DEV_SD may
@@ -3040,6 +3044,7 @@ CONFIG_MSM_IOMMU_V1=y
 # CONFIG_MSM_IOMMU_PMON is not set
 CONFIG_IOMMU_PGTABLES_L2=y
 CONFIG_MSM_IOMMU_VBIF_CHECK=y
+# CONFIG_IOMMU_NON_SECURE is not set
 
 #
 # Remoteproc drivers (EXPERIMENTAL)
