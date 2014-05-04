@@ -427,7 +427,7 @@ static void cpufreq_interactive_timer(unsigned long data)
 	pcpu->prev_load = cpu_load;
 	boosted = boost_val || now < boostpulse_endtime;
 
-	if (cpu_load >= go_hispeed_load || boosted) {
+	if (cpu_load >= go_hispeed_load || boosted || pcpu->limits_changed) {
 		if (pcpu->target_freq < hispeed_freq) {
 			new_freq = hispeed_freq;
 		} else {
@@ -1439,3 +1439,4 @@ MODULE_AUTHOR("Mike Chan <mike@android.com>");
 MODULE_DESCRIPTION("'cpufreq_interactive' - A cpufreq governor for "
 	"Latency sensitive workloads");
 MODULE_LICENSE("GPL");
+
