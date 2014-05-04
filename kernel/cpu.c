@@ -19,8 +19,6 @@
 
 #include <trace/events/sched.h>
 
-#include "smpboot.h"
-
 #ifdef CONFIG_SMP
 /* Serializes the updates to cpu_online_mask, cpu_present_mask */
 static DEFINE_MUTEX(cpu_add_remove_lock);
@@ -314,7 +312,6 @@ static int __cpuinit _cpu_up(unsigned int cpu, int tasks_frozen)
 
 	cpu_hotplug_begin();
 
-<<<<<<< HEAD
 	idle = idle_thread_get(cpu);
 	if (IS_ERR(idle)) {
 		ret = PTR_ERR(idle);
@@ -322,9 +319,7 @@ static int __cpuinit _cpu_up(unsigned int cpu, int tasks_frozen)
 	}
 
 	ret = smpboot_create_threads(cpu);
-=======
-	ret = smpboot_prepare(cpu);
->>>>>>> 2d4ab94... smp: Add generic smpboot facility
+
 	if (ret)
 		goto out;
 
@@ -351,7 +346,6 @@ static int __cpuinit _cpu_up(unsigned int cpu, int tasks_frozen)
 out_notify:
 	if (ret != 0)
 		__cpu_notify(CPU_UP_CANCELED | mod, hcpu, nr_calls, NULL);
-out:
 	cpu_hotplug_done();
 	trace_sched_cpu_hotplug(cpu, ret, 1);
 
