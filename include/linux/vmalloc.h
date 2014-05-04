@@ -136,15 +136,12 @@ extern struct vm_struct *vmlist;
 extern __init void vm_area_add_early(struct vm_struct *vm);
 extern __init void vm_area_register_early(struct vm_struct *vm, size_t align);
 extern __init int vm_area_check_early(struct vm_struct *vm);
-<<<<<<< HEAD
 #ifdef CONFIG_ENABLE_VMALLOC_SAVING
 extern void mark_vmalloc_reserved_area(void *addr, unsigned long size);
 #else
 static inline void mark_vmalloc_reserved_area(void *addr, unsigned long size)
 { };
 #endif
-=======
->>>>>>> 53d0556... msm: Allow lowmem to be non contiguous and mixed.
 
 #ifdef CONFIG_SMP
 # ifdef CONFIG_MMU
@@ -170,3 +167,4 @@ pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
 #endif
 
 #endif /* _LINUX_VMALLOC_H */
+
